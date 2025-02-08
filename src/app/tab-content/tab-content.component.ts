@@ -3,9 +3,10 @@ import { MainService } from '../services/main.service';
 
 
 @Component({
-  selector: 'app-tab-content',
-  templateUrl: './tab-content.component.html',
-  styleUrls: ['./tab-content.component.css']
+    selector: 'app-tab-content',
+    templateUrl: './tab-content.component.html',
+    styleUrls: ['./tab-content.component.css'],
+    standalone: false
 })
 export class TabContentComponent {
 
