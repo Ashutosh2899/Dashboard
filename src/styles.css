@@ -19,7 +19,8 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    /* font-family: Georgia, serif; */
+    font-family: Tahoma, Helvetica, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
 }
@@ -356,25 +357,31 @@ body {
     border-spacing: 0;
 }
 
-.users-table th,
-.users-table td {
+/* .users-table th {
     padding: 1rem;
     text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+} */
+
+.users-table td {
+    text-align: center;
     border-bottom: 1px solid #e2e8f0;
 }
 
 .users-table th {
+    text-align: center;
+    padding: 1rem;
     background-color: #f8fafc;
     font-weight: 600;
     color: #64748b;
     text-transform: uppercase;
     font-size: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
     letter-spacing: 0.05em;
 }
 
 .users-table tr {
     color: #000;
-    font-weight: 700;
 }
 
 .users-table tbody tr {
@@ -886,7 +893,7 @@ button {
     justify-content: center;
     width: 40px;
     height: 40px;
-    border: 2px solid;
+    /* border: 2px solid; */
     border-radius: 6px;
     font-size: 20px;
     font-weight: normal;

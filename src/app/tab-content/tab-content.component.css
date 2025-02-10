@@ -134,6 +134,12 @@
     color: #1e293b;
 }
 
+.users-table th:first-child,
+.users-table td:first-child {
+    width: 75px;
+    text-align: center;
+}
+
 
   
 
