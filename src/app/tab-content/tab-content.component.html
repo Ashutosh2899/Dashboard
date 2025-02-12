@@ -73,6 +73,7 @@
                     <th>Main Score</th>
                     <th>SkyFancy</th>
                     <th>Static TV</th>
+                    <th>Created Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -92,6 +93,7 @@
                         <i *ngIf="domain.isStaticDomain" class="icon icon-success fa fa-check"></i>
                         <i *ngIf="!domain.isStaticDomain" class="icon icon-danger fa fa-times"></i>
                     </td>
+                    <td>{{ domain.created_at | date: 'dd-MM-yyyy':'UTC' }}</td>
                     <td>
                         <button class="action-btn edit-btn" (click)="editdomain(domain)">
                             <i class="fa fa-edit"></i>
@@ -104,7 +106,7 @@
             </tbody>
         </table>
         <ng-template #noDataTemplate>
-            <tr><td colspan="6" class="no-data">No data found</td></tr>
+            <tr><td colspan="12" class="no-data">No data found</td></tr>
         </ng-template>
     </div>
 
@@ -136,10 +138,10 @@
                 <i class="fa fa-times close-icon" (click)="closeModal()"></i>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addDomain()">
+                <form>
                     <div class="form-group">
                         <label class="form-label" for="domain">Domain Name</label>
-                        <input type="text" id="domain" class="form-input" [(ngModel)]="newDomain" name="domain"
+                        <input type="text" id="domain" class="form-input" [(ngModel)]="newDomain" (ngModelChange)="newDomain = newDomain.trim()" name="domain"
                             placeholder="Enter domain name" required>
                     </div>
 
@@ -190,10 +192,10 @@
                 <i class="fa fa-times close-icon" (click)="closeModal()"></i>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="updateDomain()">
+                <form>
                     <div class="form-group">
                         <label class="form-label" for="domain">New Domain Name</label>
-                        <input type="text" id="domain" class="form-input" [(ngModel)]="newDomain" name="domain"
+                        <input type="text" id="domain" class="form-input" [(ngModel)]="newDomain" (ngModelChange)="newDomain = newDomain.trim()" name="domain"
                             placeholder="Enter domain name" required />
                     </div>
 
@@ -225,7 +227,7 @@
 
                     <div class="button-group">
                         <button type="button" class="button button-secondary" (click)="closeModal()">Cancel</button>
-                        <button type="submit" class="button button-primary">Update</button>
+                        <button type="submit" class="button button-primary" (click)="updateDomain()">Update</button>
                     </div>
                 </form>
             </div>

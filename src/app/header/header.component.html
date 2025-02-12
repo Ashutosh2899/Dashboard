@@ -1,11 +1,10 @@
 <header class="header">
     <div class="header-left">
-        <button class="menu-toggle">
+        <button class="menu-toggle" (click)="toggleSidebar()">
             <i class="fa fa-bars"></i>
         </button>
         <div class="logo">
-            <div class="logo-icon">D</div>
-            <h1>Dashboard</h1>
+            <img src="assets/images/logo.png" alt="Dashboard">
         </div>
     </div>
     <!-- <div class="header-actions">
@@ -16,3 +15,36 @@
         <button class="add-user-btn">Add user</button>
     </div> -->
 </header>
+
+<aside class="sidebar" [class.active]="isActive">
+    <nav class="nav">
+      <a class="nav-item" [class.active]="activeItem === 'dashboard'">
+        <span class="iconify" data-icon="mdi:view-dashboard" data-width="24"></span>
+        <span>Dashboard</span>
+      </a>
+      <!-- <a class="nav-item" [class.active]="activeItem === 'users'">
+        <span class="iconify" data-icon="mdi:chart-bar" data-width="24"></span>
+        <span>Main Score</span>
+      </a>
+      <a class="nav-item" [class.active]="activeItem === 'reports'">
+        <span class="iconify" data-icon="mdi:weather-night" data-width="24"></span>
+        <span>Sky Fancy</span>
+      </a>
+      <a class="nav-item" [class.active]="activeItem === 'transactions'">
+        <span class="iconify" data-icon="mdi:domain" data-width="24"></span>
+        <span>Static Domain</span>
+      </a>
+      <a class="nav-item" [class.active]="activeItem === 'settings'">
+        <span class="iconify" data-icon="mdi:lock-reset" data-width="24"></span>
+        <span>Forget Password</span>
+      </a> -->
+    </nav>
+    <div class="sidebar-footer">
+      <a class="nav-item" [class.active]="activeItem === 'logout'" (click)="Logout()">
+        <span class="iconify" data-icon="mdi:logout" data-width="24"></span>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+  
+

@@ -10,14 +10,13 @@ export class MainService {
 
   constructor(private http: HttpClient) { }
 
-  // addDomain(domain: string): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/AddDomain`, { Domain: domain, isStaticDomain: 0, isSkyfancy: 1, isMainscore: 0 });
-  // }
+  login(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/LoginAgent`, userData);
+  }
 
   addDomain(domainData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/AddDomain`, domainData);
   }
-
 
   getDomains(): Observable<any> {
     return this.http.get(`${this.apiUrl}/getDomain`);

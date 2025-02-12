@@ -19,7 +19,6 @@
 }
 
 body {
-    /* font-family: Georgia, serif; */
     font-family: Tahoma, Helvetica, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
@@ -39,6 +38,7 @@ body {
     background-color: var(--text-primary);
     color: var(--text-primary);
     height: var(--header-height);
+    z-index: 1;
 }
 
 .header-left {
@@ -52,7 +52,7 @@ body {
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: var(--primary-color);
+    /* color: var(--primary-color); */
     cursor: pointer;
 }
 
@@ -62,17 +62,9 @@ body {
     gap: 0.5rem;
 }
 
-.logo-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--primary-color);
-    border-radius: 50%;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.25rem;
+.logo img {
+    width: 250px;
+    height: auto;
 }
 
 /* responsive header  end*/
@@ -136,21 +128,6 @@ body {
 
 .nav-item .iconify {
     color: var(--text-secondary);
-}
-
-.logo h1 {
-    color: #0d0f1c;
-}
-
-.logo-icon {
-    width: 32px;
-    height: 32px;
-    background-color: var(--primary-color);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
 }
 
 .search-bar {
@@ -232,6 +209,12 @@ body {
 
 .sidebar:hover+.main-content {
     margin-left: var(--sidebar-width);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 0.5rem;
+    border-top: 1px solid var(--border-color);
 }
 
 /* .main-content {
@@ -479,19 +462,26 @@ body {
 
 @media (max-width: 768px) {
 
+    .logo img {
+        width: 200px;
+    }
+
     .sidebar {
         width: 100%;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
-    }
-
-    .sidebar {
         transform: translateX(-100%);
         width: var(--sidebar-width);
+        transition: transform 0.3s ease-in-out;
     }
 
     .sidebar.active {
-        transform: translateX(0);
+        transform: translateX(0%);
+    }
+
+    .sidebar:not(:hover) .nav-item span {
+        display: block;
+        font-weight: 700;
     }
 
     .main-content {

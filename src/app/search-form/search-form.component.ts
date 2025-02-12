@@ -8,10 +8,8 @@ import { Component } from '@angular/core';
 })
 export class SearchFormComponent {
   submit() {
-    // Implement submit logic
   }
 
   cancel() {
-    // Implement cancel logic
   }
 }

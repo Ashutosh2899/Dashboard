@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { MainService } from '../services/main.service';
+import { ToasterService } from '../toaster.service';
 
 
 @Component({
-    selector: 'app-tab-content',
-    templateUrl: './tab-content.component.html',
-    styleUrls: ['./tab-content.component.css'],
-    standalone: false
+  selector: 'app-tab-content',
+  templateUrl: './tab-content.component.html',
+  styleUrls: ['./tab-content.component.css'],
+  standalone: false
 })
 export class TabContentComponent {
 
@@ -38,20 +39,22 @@ export class TabContentComponent {
     { id: 'CasinoStreams', name: 'CASINO STREAMS' }
   ];
 
-  constructor(private mainService: MainService) { }
+  constructor(private mainService: MainService,private toastr: ToasterService) { }
 
   ngOnInit() {
     this.fetchDomains();
   }
 
   fetchDomains() {
-    this.mainService.getDomains().subscribe((response: any) => {
-      if (response && response.result) {
-        this.domains = response.result || [];
-        this.filterDomains();
-        this.calculatePages();
+    this.mainService.getDomains().subscribe(
+      (response: any) => {
+        if (response && response.result) {
+          this.domains = response.result || [];
+          this.filterDomains();
+          this.calculatePages();
+        }
       }
-    });
+    );
   }
 
   filterDomains() {
@@ -68,6 +71,7 @@ export class TabContentComponent {
 
   addDomain() {
     if (!this.newDomain.trim()) {
+      this.toastr.warning('Please enter a valid domain name', 'Warning');
       return;
     }
 
@@ -78,14 +82,17 @@ export class TabContentComponent {
       isMainscore: this.isMainscore ? 1 : 0
     };
 
-    this.mainService.addDomain(domainData).subscribe(() => {
-      this.newDomain = '';
-      this.isStaticDomain = false;
-      this.isSkyfancy = false;
-      this.isMainscore = false;
-      this.fetchDomains();
-      this.closeModal();
-    });
+    this.mainService.addDomain(domainData).subscribe(
+      () => {
+        this.toastr.success('Domain added successfully!', 'Success');
+        this.newDomain = '';
+        this.isStaticDomain = false;
+        this.isSkyfancy = false;
+        this.isMainscore = false;
+        this.fetchDomains();
+        this.closeModal();
+      }
+    );
   }
 
   editdomain(domain: any) {
@@ -107,14 +114,11 @@ export class TabContentComponent {
     };
 
     if (!this.id) return;
-
     this.mainService.editDomain(this.id, domainData).subscribe(
       () => {
+        this.toastr.success('Domain updated successfully!', 'Success');
         this.fetchDomains();
         this.closeModal();
-      },
-      (error) => {
-        console.error('Error updating domain:', error);
       }
     );
   }
@@ -138,8 +142,11 @@ export class TabContentComponent {
     this.mainService.deleteDomain(this.id).subscribe(
       (resp: any) => {
         if (resp && resp.errorCode === 0) {
+          this.toastr.success('Domain deleted successfully!', 'Success');
           this.fetchDomains();
           this.closeModal();
+        } else {
+          this.toastr.error('Failed to delete domain', 'Error');
         }
       }
     );
