@@ -110,14 +110,21 @@
         </ng-template>
     </div>
 
-
     <div class="table-footer">
-        <!-- <pagination-controls (pageChange)="currentPage=$event"></pagination-controls> -->
         <div class="pagination">
-            <button class="page-btn" (click)="previousPage()"><i class="fa fa-chevron-left"></i></button>
-            <button *ngFor="let page of pagesArray" class="page-btn" [class.active]="page === currentPage"
-                (click)="goToPage(page)">{{ page }}</button>
-            <button class="page-btn" (click)="nextPage()"><i class="fa fa-chevron-right"></i></button>
+          <button class="page-btn" (click)="previousPage()">
+            <i class="fa fa-chevron-left"></i>
+          </button>
+      
+          <button *ngFor="let page of pagesArray" class="page-btn"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+            {{ page === -1 ? '...' : page }}
+          </button>
+      
+          <button class="page-btn" (click)="nextPage()">
+            <i class="fa fa-chevron-right"></i>
+          </button>
         </div>
         <div class="rows-select">
             <label>Last:</label>
@@ -125,8 +132,7 @@
                 <option *ngFor="let size of rowsPerPageOptions" [value]="size">{{ size }}</option>
             </select>
         </div>
-
-    </div>
+      </div>
 </div>
 
 <!-- Modal HTML -->

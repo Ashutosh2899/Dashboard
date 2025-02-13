@@ -169,24 +169,66 @@ export class TabContentComponent {
 
   // custom pagination controls start
 
+
   calculatePages() {
     const totalPages = Math.ceil(this.domains.length / this.psize);
-    this.pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
+    this.pagesArray = this.generatePagination(totalPages);
   }
-
+  
+  generatePagination(totalPages: number): number[] {
+    const pages: number[] = [];
+    const visiblePages = 5; // Pehle 5 pages dikhenge
+  
+    if (totalPages <= visiblePages + 2) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+  
+    if (this.currentPage <= visiblePages) {
+      for (let i = 1; i <= visiblePages; i++) {
+        pages.push(i);
+      }
+      if (totalPages > visiblePages + 2) {
+        pages.push(-1); // '...' ka symbol
+      }
+      pages.push(totalPages);
+    } 
+    else if (this.currentPage > visiblePages && this.currentPage < totalPages - 3) {
+      pages.push(1);
+      pages.push(-1); // '...' show karega
+      for (let i = this.currentPage - 1; i <= this.currentPage + 1; i++) {
+        pages.push(i);
+      }
+      pages.push(-1);
+      pages.push(totalPages);
+    } 
+    else {
+      pages.push(1);
+      pages.push(-1);
+      for (let i = totalPages - (visiblePages - 1); i <= totalPages; i++) {
+        pages.push(i);
+      }
+    }
+  
+    return pages;
+  }
+  
   goToPage(page: number) {
+    if (page === -1) return; // Agar '...' pe click ho to kuch na kare
     this.currentPage = page;
+    this.calculatePages();
   }
-
+  
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.calculatePages();
     }
   }
-
+  
   nextPage() {
-    if (this.currentPage < this.pagesArray.length) {
+    if (this.currentPage < Math.ceil(this.domains.length / this.psize)) {
       this.currentPage++;
+      this.calculatePages();
     }
   }
 
