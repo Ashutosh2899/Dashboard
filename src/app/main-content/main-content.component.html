@@ -1,8 +1,8 @@
-<app-header></app-header>
+<app-header (filterChange)="onFilterChange($event)"></app-header>
 <app-sidebar></app-sidebar>
 <main class="main-content">
   <div class="content-wrapper">
     <app-search-form></app-search-form>
-    <app-tab-content></app-tab-content>
+    <app-tab-content [filterType]="selectedFilter"></app-tab-content>
   </div>
 </main>

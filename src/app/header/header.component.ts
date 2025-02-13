@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToasterService } from '../toaster.service';
 
@@ -9,11 +9,11 @@ import { ToasterService } from '../toaster.service';
     standalone: false
 })
 export class HeaderComponent {
-
-    isActive: boolean = false;
+    @Output() filterChange = new EventEmitter<string>();
     activeItem = 'dashboard';
+    isActive: boolean = false;
 
-    constructor(private router: Router,private toastr: ToasterService) { }
+    constructor(private router: Router, private toastr: ToasterService) { }
 
     toggleSidebar() {
         this.isActive = !this.isActive;
@@ -23,7 +23,13 @@ export class HeaderComponent {
         localStorage.clear();
         this.toastr.success('Logout successful!', 'Success'); // ✅ Show toaster
         this.router.navigate(['/login']);
-      }
+    }
+  
+    setActiveItem(item: string) {
+      console.log('Sidebar Clicked:', item); // Debugging ke liye
+      this.activeItem = item;
+      this.filterChange.emit(item);
+    }
 }
 
 

@@ -18,26 +18,29 @@
 
 <aside class="sidebar" [class.active]="isActive">
     <nav class="nav">
-      <a class="nav-item" [class.active]="activeItem === 'dashboard'">
+      <a class="nav-item" [class.active]="activeItem === 'dashboard'" (click)="setActiveItem('all')">
         <span class="iconify" data-icon="mdi:view-dashboard" data-width="24"></span>
         <span>Dashboard</span>
       </a>
-      <!-- <a class="nav-item" [class.active]="activeItem === 'users'">
+      <a class="nav-item" [class.active]="activeItem === 'mainscore'" (click)="setActiveItem('mainscore')">
         <span class="iconify" data-icon="mdi:chart-bar" data-width="24"></span>
         <span>Main Score</span>
       </a>
-      <a class="nav-item" [class.active]="activeItem === 'reports'">
+      
+      <a class="nav-item" [class.active]="activeItem === 'skyfancy'" (click)="setActiveItem('skyfancy')">
         <span class="iconify" data-icon="mdi:weather-night" data-width="24"></span>
         <span>Sky Fancy</span>
       </a>
-      <a class="nav-item" [class.active]="activeItem === 'transactions'">
+      
+      <a class="nav-item" [class.active]="activeItem === 'static'" (click)="setActiveItem('static')">
         <span class="iconify" data-icon="mdi:domain" data-width="24"></span>
-        <span>Static Domain</span>
+        <span>Static Tv</span>
       </a>
+      
       <a class="nav-item" [class.active]="activeItem === 'settings'">
         <span class="iconify" data-icon="mdi:lock-reset" data-width="24"></span>
         <span>Forget Password</span>
-      </a> -->
+      </a>
     </nav>
     <div class="sidebar-footer">
       <a class="nav-item" [class.active]="activeItem === 'logout'" (click)="Logout()">

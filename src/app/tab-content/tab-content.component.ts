@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { MainService } from '../services/main.service';
 import { ToasterService } from '../toaster.service';
 
@@ -40,9 +40,16 @@ export class TabContentComponent {
   ];
 
   constructor(private mainService: MainService,private toastr: ToasterService) { }
+  @Input() filterType: string = 'all';
 
   ngOnInit() {
     this.fetchDomains();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Filter Type Changed:', this.filterType); 
+    this.filterDomains();
+    this.calculatePages();
   }
 
   fetchDomains() {
@@ -57,16 +64,35 @@ export class TabContentComponent {
     );
   }
 
-  filterDomains() {
-    const query = this.searchQuery.toLowerCase().trim();
-    this.filteredDomains = this.domains.filter(domain =>
-      domain.Domain.toLowerCase().includes(query)
-    );
-  }
-
   onSearchInputChange() {
     this.filterDomains();
     this.calculatePages();
+  }
+
+  filterDomains() {
+    const query = this.searchQuery.toLowerCase().trim();
+  
+    let tempDomains = [];
+  
+    if (this.filterType === 'mainscore') {
+      tempDomains = this.domains.filter(domain => domain.isMainscore);
+    } else if (this.filterType === 'skyfancy') {
+      tempDomains = this.domains.filter(domain => domain.isSkyfancy);
+    } else if (this.filterType === 'static') {
+      tempDomains = this.domains.filter(domain => domain.isStaticDomain);
+    } else {
+      tempDomains = [...this.domains];
+    }
+  
+    // search query
+    if (query) {
+      this.filteredDomains = tempDomains.filter(domain =>
+        domain.Domain.toLowerCase().includes(query)
+      );
+    } else {
+      this.filteredDomains = tempDomains;
+    }
+
   }
 
   addDomain() {
@@ -171,7 +197,7 @@ export class TabContentComponent {
 
 
   calculatePages() {
-    const totalPages = Math.ceil(this.domains.length / this.psize);
+    const totalPages = Math.ceil(this.filteredDomains.length / this.psize);
     this.pagesArray = this.generatePagination(totalPages);
   }
   
@@ -226,7 +252,7 @@ export class TabContentComponent {
   }
   
   nextPage() {
-    if (this.currentPage < Math.ceil(this.domains.length / this.psize)) {
+    if (this.currentPage < Math.ceil(this.filteredDomains.length / this.psize)) {
       this.currentPage++;
       this.calculatePages();
     }
@@ -234,8 +260,8 @@ export class TabContentComponent {
 
   getDisplayedRange(): string {
     const start = (this.currentPage - 1) * this.psize + 1;
-    const end = Math.min(this.currentPage * this.psize, this.domains.length);
-    const total = this.domains.length;
+    const end = Math.min(this.currentPage * this.psize, this.filteredDomains.length);
+    const total = this.filteredDomains.length;
     return `${start} - ${end} of ${total}`;
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
     selector: 'app-main-content',
@@ -7,5 +7,10 @@ import { Component } from '@angular/core';
     standalone: false
 })
 export class MainContentComponent {
+    selectedFilter: string = 'all'; // Default value
 
+    onFilterChange(filter: string) {
+      console.log('Filter received in AppComponent:', filter);
+      this.selectedFilter = filter;
+    }
 }
