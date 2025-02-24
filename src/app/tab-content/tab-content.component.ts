@@ -22,6 +22,7 @@ export class TabContentComponent {
   isupdatedDomain: boolean = false;
   isremoveDomain: boolean = false;
 
+  isAscending = true;
   psize: number = 10;
   currentPage: number = 1;
   pagesArray: number[] = [];
@@ -29,6 +30,10 @@ export class TabContentComponent {
 
   searchQuery: string = '';
   filteredDomains: any[] = [];
+
+  Bakcupdomain: string = '';
+  backupdomain: string[] = [];
+  isbackupdomain: boolean = false;
 
 
   tabs = [
@@ -39,7 +44,7 @@ export class TabContentComponent {
     { id: 'CasinoStreams', name: 'CASINO STREAMS' }
   ];
 
-  constructor(private mainService: MainService,private toastr: ToasterService) { }
+  constructor(private mainService: MainService, private toastr: ToasterService) { }
   @Input() filterType: string = 'all';
 
   ngOnInit() {
@@ -47,7 +52,6 @@ export class TabContentComponent {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('Filter Type Changed:', this.filterType); 
     this.filterDomains();
     this.calculatePages();
   }
@@ -71,9 +75,9 @@ export class TabContentComponent {
 
   filterDomains() {
     const query = this.searchQuery.toLowerCase().trim();
-  
+
     let tempDomains = [];
-  
+
     if (this.filterType === 'mainscore') {
       tempDomains = this.domains.filter(domain => domain.isMainscore);
     } else if (this.filterType === 'skyfancy') {
@@ -83,7 +87,7 @@ export class TabContentComponent {
     } else {
       tempDomains = [...this.domains];
     }
-  
+
     // search query
     if (query) {
       this.filteredDomains = tempDomains.filter(domain =>
@@ -130,23 +134,65 @@ export class TabContentComponent {
     this.isupdatedDomain = true;
   }
 
+  openBackupModal(domain: any) {
+    this.id = domain.id;
+    this.newDomain = domain.Domain || '';
+    this.isMainscore = domain.isMainscore || false;
+    this.isSkyfancy = domain.isSkyfancy || false;
+    this.isStaticDomain = domain.isStaticDomain || false;
+    this.Bakcupdomain = '';
+    this.mainService.getBackupDomains(this.newDomain).subscribe(
+      (res: any) => {
+        this.backupdomain = res.result || [];
+        this.isbackupdomain = true;
+      },
+      (error) => {
+        console.error('Error fetching backup domains:', error);
+        this.isbackupdomain = true;
+      }
+    );
+  }
+
+  removeBackupDomain() {
+
+  }
+
+  // Update domains
   updateDomain() {
-    if (!this.newDomain.trim()) return;
+    if (!this.newDomain.trim()) {
+      this.toastr.error('Main domain cannot be empty!', 'Error');
+      return;
+    }
+
+    const backupDomainArray = this.Bakcupdomain.split(',')
+      .map((domain) => domain.trim())
+      .filter((domain) => domain);
+
     const domainData = {
       Domain: this.newDomain,
+      backupDomains: backupDomainArray,
       isStaticDomain: this.isStaticDomain ? 1 : 0,
       isSkyfancy: this.isSkyfancy ? 1 : 0,
       isMainscore: this.isMainscore ? 1 : 0,
     };
 
     if (!this.id) return;
+
     this.mainService.editDomain(this.id, domainData).subscribe(
       () => {
         this.toastr.success('Domain updated successfully!', 'Success');
         this.fetchDomains();
-        this.closeModal();
+        this.closeBackup();
+      },
+      (error) => {
+        this.toastr.error('Failed to update domain.', 'Error');
       }
     );
+  }
+
+  // Close the modal
+  closeBackup() {
+    this.isbackupdomain = false;
   }
 
   resetFields() {
@@ -194,21 +240,19 @@ export class TabContentComponent {
   }
 
   // custom pagination controls start
-
-
   calculatePages() {
     const totalPages = Math.ceil(this.filteredDomains.length / this.psize);
     this.pagesArray = this.generatePagination(totalPages);
   }
-  
+
   generatePagination(totalPages: number): number[] {
     const pages: number[] = [];
-    const visiblePages = 5; // Pehle 5 pages dikhenge
-  
+    const visiblePages = 3;
+
     if (totalPages <= visiblePages + 2) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
-  
+
     if (this.currentPage <= visiblePages) {
       for (let i = 1; i <= visiblePages; i++) {
         pages.push(i);
@@ -217,7 +261,7 @@ export class TabContentComponent {
         pages.push(-1); // '...' ka symbol
       }
       pages.push(totalPages);
-    } 
+    }
     else if (this.currentPage > visiblePages && this.currentPage < totalPages - 3) {
       pages.push(1);
       pages.push(-1); // '...' show karega
@@ -226,7 +270,7 @@ export class TabContentComponent {
       }
       pages.push(-1);
       pages.push(totalPages);
-    } 
+    }
     else {
       pages.push(1);
       pages.push(-1);
@@ -234,23 +278,23 @@ export class TabContentComponent {
         pages.push(i);
       }
     }
-  
+
     return pages;
   }
-  
+
   goToPage(page: number) {
     if (page === -1) return; // Agar '...' pe click ho to kuch na kare
     this.currentPage = page;
     this.calculatePages();
   }
-  
+
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.calculatePages();
     }
   }
-  
+
   nextPage() {
     if (this.currentPage < Math.ceil(this.filteredDomains.length / this.psize)) {
       this.currentPage++;
@@ -271,8 +315,6 @@ export class TabContentComponent {
   }
 
   // custom pagination controls end
-
-  isAscending = true;
 
   sortDomains() {
     this.isAscending = !this.isAscending;

@@ -69,7 +69,7 @@
 }
 
 .action-btn {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
     background: none;
     border: 1px solid #e2e8f0;
     color: #64748b;
@@ -145,6 +145,54 @@
     background-color: #f2f2f2;
 }
 
+
+
+.backup-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.backup-table th, .backup-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.backup-table th {
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.backup-table td {
+    text-align: center;
+}
+
+.backup-table th:first-child, 
+.backup-table td:first-child {
+    width: 50px;
+}
+
+.backup-table tbody tr:hover {
+    background: #f9f9f9;
+}
+
+.remove-icon {
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.remove-icon:hover {
+    color: #c0392b;
+    transform: scale(1.2);
+}
 
 
   
